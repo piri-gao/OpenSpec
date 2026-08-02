@@ -6,6 +6,7 @@ export interface SkillTemplate {
   name: string;
   description: string;
   instructions: string;
+  companionFiles?: Record<string, string>;
   license?: string;
   compatibility?: string;
   metadata?: Record<string, string>;

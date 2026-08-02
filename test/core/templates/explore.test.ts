@@ -65,4 +65,15 @@ describe('explore templates', () => {
       );
     }
   });
+
+  it('supports explicit grill mode without changing default explore behavior', () => {
+    for (const [label, body] of bodies) {
+      expect(body, label).toContain('**Optional grill mode:**');
+      expect(body, label).toContain('`--grill`');
+      expect(body, label).toContain('openspec/guides/grill.md');
+      expect(body, label).toContain('grill.md');
+      expect(body, label).toContain('Do not use grill mode unless the user asks for it');
+      expect(body, label).not.toContain('Good grill questions often target');
+    }
+  });
 });

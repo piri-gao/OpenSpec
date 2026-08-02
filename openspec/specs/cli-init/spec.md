@@ -197,6 +197,13 @@ The command SHALL generate Agent Skills for selected AI tools.
 - **AND** each SKILL.md SHALL contain YAML frontmatter with name and description
 - **AND** each SKILL.md SHALL contain the skill instructions
 
+#### Scenario: Generating explore grill guide
+
+- **WHEN** the selected profile includes the `explore` workflow
+- **THEN** create `openspec/guides/grill.md` with the full grill-mode interview guidance
+- **AND** the `openspec-explore` skill directory SHALL include `grill.md` alongside `SKILL.md`
+- **AND** the explore skill instructions SHALL reference the companion guide instead of embedding the full grill-mode guidance inline
+
 ### Requirement: Slash Command Generation
 
 The command SHALL generate opsx slash commands only for selected tools that have a registered command adapter, while keeping adapterless tools valid for skill generation.

@@ -11,6 +11,7 @@ import {
   getApplyChangeSkillTemplate,
   getUpdateChangeSkillTemplate,
   getFfChangeSkillTemplate,
+  EXPLORE_GRILL_GUIDE,
   getSyncSpecsSkillTemplate,
   getArchiveChangeSkillTemplate,
   getBulkArchiveChangeSkillTemplate,
@@ -49,6 +50,11 @@ export interface SkillTemplateEntry {
 export interface CommandTemplateEntry {
   template: ReturnType<typeof getOpsxExploreCommandTemplate>;
   id: string;
+}
+
+export interface WorkflowGuideFile {
+  path: string;
+  content: string;
 }
 
 /**
@@ -122,6 +128,18 @@ export function getCommandContents(workflowFilter?: readonly string[]): CommandC
   }));
 }
 
+export function getWorkflowGuideFiles(workflowFilter?: readonly string[]): WorkflowGuideFile[] {
+  const filterSet = workflowFilter ? new Set(workflowFilter) : undefined;
+  if (filterSet && !filterSet.has('explore')) return [];
+
+  return [
+    {
+      path: 'openspec/guides/grill.md',
+      content: EXPLORE_GRILL_GUIDE,
+    },
+  ];
+}
+
 /**
  * Generates skill file content with YAML frontmatter.
  *
@@ -152,4 +170,8 @@ metadata:
 
 ${instructions}
 `;
+}
+
+export function generateSkillCompanionFiles(template: SkillTemplate): Record<string, string> {
+  return template.companionFiles ?? {};
 }

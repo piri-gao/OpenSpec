@@ -21,7 +21,9 @@ import {
   getToolVersionStatus,
   getSkillTemplates,
   getCommandContents,
+  getWorkflowGuideFiles,
   generateSkillContent,
+  generateSkillCompanionFiles,
   getToolsWithSkillsDir,
   type ToolVersionStatus,
 } from './shared/index.js';
@@ -148,6 +150,9 @@ export class UpdateCommand {
     const desiredWorkflows = profileWorkflows.filter((workflow): workflow is (typeof ALL_WORKFLOWS)[number] =>
       (ALL_WORKFLOWS as readonly string[]).includes(workflow)
     );
+    for (const guide of getWorkflowGuideFiles(desiredWorkflows)) {
+      await FileSystemUtils.writeFile(path.join(resolvedProjectPath, guide.path), guide.content);
+    }
 
     // 4. Detect and handle legacy artifacts + upgrade legacy tools using effective config
     const legacyUpgrade = await this.handleLegacyCleanup(
@@ -281,6 +286,9 @@ export class UpdateCommand {
             );
             const skillContent = generateSkillContent(template, OPENSPEC_VERSION, transformer);
             await FileSystemUtils.writeFile(skillFile, skillContent);
+            for (const [relativePath, content] of Object.entries(generateSkillCompanionFiles(template))) {
+              await FileSystemUtils.writeFile(path.join(skillDir, relativePath), content);
+            }
           }
 
           removedDeselectedSkillCount += await this.removeUnselectedSkillDirs(skillsDir, toolWorkflows);
@@ -1025,6 +1033,9 @@ export class UpdateCommand {
             );
             const skillContent = generateSkillContent(template, OPENSPEC_VERSION, transformer);
             await FileSystemUtils.writeFile(skillFile, skillContent);
+            for (const [relativePath, content] of Object.entries(generateSkillCompanionFiles(template))) {
+              await FileSystemUtils.writeFile(path.join(skillDir, relativePath), content);
+            }
           }
         }
 

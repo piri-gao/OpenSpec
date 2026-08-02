@@ -18,6 +18,25 @@ Explore is the right first step more often than people expect. Use it when any o
 
 Skip explore only when you already know exactly what you want and how. In that case go straight to [`/opsx:propose`](commands.md#opsxpropose).
 
+## Grill mode
+
+Sometimes you do not want a loose conversation. You want the AI to challenge the idea until the weak parts show. For that, ask for grill mode:
+
+```text
+/opsx:explore --grill redesign permissions
+```
+
+Grill mode is still explore. It writes no code and does not force a proposal. The difference is the stance: the AI asks one focused question at a time, waits for your answer, and presses on unclear goals, hidden assumptions, missing constraints, weak success criteria, and risky tradeoffs.
+
+Use grill mode when the stakes are higher than usual:
+
+- You are about to change architecture, data flow, auth, billing, privacy, or a cross-team contract.
+- The idea sounds plausible but still feels mushy.
+- You want a sharper scope before `/opsx:propose`.
+- You need someone to challenge the plan, not politely nod at it.
+
+When the plan is crisp enough, grill mode should stop and summarize an explore brief: problem statement, goals and non-goals, constraints, options considered, risks, acceptance criteria, and a suggested OpenSpec next step.
+
 ## What it does (and doesn't)
 
 Explore is a **conversation**, not a generator.
@@ -102,6 +121,7 @@ If you use the expanded command set, explore can hand off to `/opsx:new` instead
 - **Bring the problem, not the solution.** "Logins feel slow" gives the AI room to investigate. "Add a Redis cache" pre-commits you to an answer you haven't tested yet.
 - **Ask for the tradeoffs out loud.** "What are the downsides of each option?" gets you a more honest comparison.
 - **Let it read first.** The best explorations start with the AI actually looking at your code, not guessing. Point it at the relevant area if it helps.
+- **Use grill mode when you want pressure.** Add `--grill` when you want one-question-at-a-time scrutiny before a proposal.
 - **It's okay to bail.** If exploration reveals the idea isn't worth it, that's a win. You learned it cheaply.
 - **Explore again mid-change.** Stuck during `/opsx:apply`? You can step back and explore a sub-problem, then return.
 

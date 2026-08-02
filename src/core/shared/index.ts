@@ -23,8 +23,11 @@ export {
 export {
   type SkillTemplateEntry,
   type CommandTemplateEntry,
+  type WorkflowGuideFile,
   getSkillTemplates,
   getCommandTemplates,
   getCommandContents,
+  getWorkflowGuideFiles,
   generateSkillContent,
+  generateSkillCompanionFiles,
 } from './skill-generation.js';

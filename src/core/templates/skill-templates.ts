@@ -6,7 +6,7 @@
 
 export type { SkillTemplate, CommandTemplate } from './types.js';
 
-export { getExploreSkillTemplate, getOpsxExploreCommandTemplate } from './workflows/explore.js';
+export { EXPLORE_GRILL_GUIDE, getExploreSkillTemplate, getOpsxExploreCommandTemplate } from './workflows/explore.js';
 export { getNewChangeSkillTemplate, getOpsxNewCommandTemplate } from './workflows/new-change.js';
 export { getContinueChangeSkillTemplate, getOpsxContinueCommandTemplate } from './workflows/continue-change.js';
 export { getApplyChangeSkillTemplate, getOpsxApplyCommandTemplate } from './workflows/apply-change.js';

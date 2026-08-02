@@ -41,6 +41,13 @@ The update command SHALL refresh OpenSpec-managed files in a predictable manner 
 - **AND** update only the OpenSpec-managed sections inside existing AI tool files, leaving user-authored content untouched
 - **AND** avoid creating new native-tool configuration files (slash commands, CLAUDE.md, etc.) unless they already exist
 
+#### Scenario: Updating explore grill guide
+
+- **WHEN** the active profile includes the `explore` workflow
+- **THEN** create or refresh `openspec/guides/grill.md` with the latest grill-mode interview guidance
+- **AND** refresh `grill.md` beside generated `openspec-explore/SKILL.md` files for configured skill-capable tools
+- **AND** keep the explore workflow instructions lightweight by referencing the guide instead of embedding the full grill-mode guidance inline
+
 ### Requirement: Core Files Always Updated
 The update command SHALL always update the core OpenSpec files and display an ASCII-safe success message.
 

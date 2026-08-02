@@ -45,7 +45,9 @@ import {
   getToolStates,
   getSkillTemplates,
   getCommandContents,
+  getWorkflowGuideFiles,
   generateSkillContent,
+  generateSkillCompanionFiles,
   type ToolSkillStatus,
 } from './shared/index.js';
 import { getGlobalConfig, type Delivery, type Profile } from './global-config.js';
@@ -703,6 +705,9 @@ export class InitCommand {
     const deliveryIncludesCommands = delivery !== 'skills';
     const skillTemplates = getSkillTemplates(workflows);
     const commandContents = getCommandContents(workflows);
+    for (const guide of getWorkflowGuideFiles(workflows)) {
+      await FileSystemUtils.writeFile(path.join(projectPath, guide.path), guide.content);
+    }
 
     // Process each tool
     for (const tool of tools) {
@@ -733,6 +738,9 @@ export class InitCommand {
 
             // Write the skill file
             await FileSystemUtils.writeFile(skillFile, skillContent);
+            for (const [relativePath, content] of Object.entries(generateSkillCompanionFiles(template))) {
+              await FileSystemUtils.writeFile(path.join(skillDir, relativePath), content);
+            }
           }
         }
         if (shouldRemoveSkillsForTool(tool.value, delivery)) {

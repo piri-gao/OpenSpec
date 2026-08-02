@@ -84,16 +84,18 @@ Think through ideas, investigate problems, and clarify requirements before commi
 
 **Syntax:**
 ```
-/opsx:explore [topic]
+/opsx:explore [--grill] [topic]
 ```
 
 **Arguments:**
 | Argument | Required | Description |
 |----------|----------|-------------|
+| `--grill` | No | Switches to a focused, one-question-at-a-time interview that challenges the plan before proposing |
 | `topic` | No | What you want to explore or investigate |
 
 **What it does:**
 - Opens an exploratory conversation with no structure required
+- Optionally runs grill mode when you ask for `--grill`, `grill`, a focused interview, or a challenge
 - Investigates the codebase to answer questions
 - Compares options and approaches
 - Creates visual diagrams to clarify thinking
@@ -126,6 +128,7 @@ AI:  Ready when you are. Run /opsx:propose add-jwt-auth to begin.
 
 **Tips:**
 - Use when requirements are unclear or you need to investigate
+- Add `--grill` when you want the AI to challenge assumptions one question at a time
 - No artifacts are created during exploration
 - Good for comparing multiple approaches before deciding
 - Can read files and search the codebase

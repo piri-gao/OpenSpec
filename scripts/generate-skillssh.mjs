@@ -18,7 +18,11 @@ import { writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { getSkillTemplates, generateSkillContent } from '../dist/core/shared/skill-generation.js';
+import {
+  getSkillTemplates,
+  generateSkillContent,
+  generateSkillCompanionFiles,
+} from '../dist/core/shared/skill-generation.js';
 import { transformToSkillReferences } from '../dist/utils/command-references.js';
 import {
   cleanSkillSubdirectories,
@@ -41,6 +45,9 @@ for (const { template, dirName } of getSkillTemplates()) {
   );
   const skillDir = prepareSkillDirectory(outDir, dirName);
   writeFileSync(join(skillDir, 'SKILL.md'), content, 'utf8');
+  for (const [relativePath, fileContent] of Object.entries(generateSkillCompanionFiles(template))) {
+    writeFileSync(join(skillDir, relativePath), fileContent, 'utf8');
+  }
   count++;
 }
 

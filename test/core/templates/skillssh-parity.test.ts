@@ -6,6 +6,7 @@ import { describe, expect, it } from 'vitest';
 
 import {
   generateSkillContent,
+  generateSkillCompanionFiles,
   getSkillTemplates,
 } from '../../../src/core/shared/skill-generation.js';
 import { transformToSkillReferences } from '../../../src/utils/command-references.js';
@@ -26,13 +27,25 @@ describe('skills.sh distribution parity', () => {
       const committedPath = join(repoRoot, SKILLS_DIR, dirName, 'SKILL.md');
       const committed = readFileSync(committedPath, 'utf8');
       expect(committed, `${dirName} is stale — run \`pnpm generate:skills\``).toBe(expected);
+
+      for (const [relativePath, expectedContent] of Object.entries(
+        generateSkillCompanionFiles(template)
+      )) {
+        const committedCompanion = readFileSync(
+          join(repoRoot, SKILLS_DIR, dirName, relativePath),
+          'utf8'
+        );
+        expect(committedCompanion, `${dirName}/${relativePath} is stale`).toBe(
+          expectedContent
+        );
+      }
     }
   });
 
   // Guard against extra, renamed, or symlinked entries that the per-template
   // loop above would never visit: the committed tree must be exactly what the
   // generator owns — README.md plus one real directory per template, each
-  // holding a single real SKILL.md.
+  // holding SKILL.md and any declared companion files.
   it('commits exactly the generated file set — no extra or symlinked entries', () => {
     const skillsRoot = join(repoRoot, SKILLS_DIR);
     const expectedDirs = getSkillTemplates()
@@ -56,14 +69,18 @@ describe('skills.sh distribution parity', () => {
     expect(files).toEqual(['README.md']);
 
     for (const dir of dirs) {
+      const template = getSkillTemplates().find((entry) => entry.dirName === dir)!.template;
+      const expectedFiles = ['SKILL.md', ...Object.keys(generateSkillCompanionFiles(template))].sort();
       const inner = readdirSync(join(skillsRoot, dir), { withFileTypes: true }).filter(
         (e) => !(e.isFile() && e.name.startsWith('.'))
       );
       expect(
-        inner.map((e) => e.name),
-        `skills/${dir} must contain only SKILL.md`
-      ).toEqual(['SKILL.md']);
-      expect(inner[0]!.isFile(), `skills/${dir}/SKILL.md must be a regular file`).toBe(true);
+        inner.map((e) => e.name).sort(),
+        `skills/${dir} must contain only generated files`
+      ).toEqual(expectedFiles);
+      for (const entry of inner) {
+        expect(entry.isFile(), `skills/${dir}/${entry.name} must be a regular file`).toBe(true);
+      }
     }
   });
 });

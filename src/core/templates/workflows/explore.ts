@@ -7,6 +7,59 @@
 import type { SkillTemplate, CommandTemplate } from '../types.js';
 import { STORE_SELECTION_GUIDANCE } from './store-selection.js';
 
+export const EXPLORE_GRILL_GUIDE = `# Grill Mode
+
+Grill mode is a focused OpenSpec explore interview. Use it only when the user explicitly asks for \`--grill\`, \`grill\`, a focused interview, or to be challenged.
+
+Stay inside explore mode:
+
+- Do not implement application code.
+- Do not create a proposal unless the user asks.
+- Do not turn this into a fixed multi-step workflow.
+- Ground the interview in code, specs, active changes, and OpenSpec context when they matter.
+
+Ask one question at a time:
+
+- Wait for the user's answer before asking the next question.
+- Make each question direct and specific.
+- Follow the weakest signal in the previous answer.
+- Stop when the plan is clear enough.
+
+Press on:
+
+- Vague goals
+- Hidden assumptions
+- Missing constraints
+- Unclear users
+- Weak success criteria
+- Risky tradeoffs
+- Existing behavior, spec, or code paths that could be disturbed
+- Failure modes in production, adoption, maintenance, or coordination
+
+Good grill questions often target:
+
+- Who exactly is this for, and what changes for them?
+- What problem are we solving, and what are we deliberately not solving?
+- What existing behavior, spec, or code path does this disturb?
+- What would make this approach fail in production or adoption?
+- What assumption would invalidate the whole plan?
+- What is the smallest version that proves the idea?
+- How will we know this worked?
+
+When grill mode ends, offer a concise explore brief:
+
+- Problem statement
+- Goals and non-goals
+- Constraints
+- Options considered
+- Recommended direction, if one emerged
+- Risks and open questions
+- Acceptance criteria
+- Suggested OpenSpec next step, such as \`/opsx:propose\`
+`;
+
+const GRILL_MODE_GUIDANCE = `**Optional grill mode:** If the user explicitly asks for \`grill\`, \`--grill\`, a focused interview, or to be challenged, keep using explore mode but first read the full grill guide from \`openspec/guides/grill.md\` in the resolved OpenSpec root. If running from the \`openspec-explore\` skill, read \`grill.md\` next to \`SKILL.md\` instead. Do not use grill mode unless the user asks for it.`;
+
 export function getExploreSkillTemplate(): SkillTemplate {
   return {
     name: 'openspec-explore',
@@ -16,6 +69,8 @@ export function getExploreSkillTemplate(): SkillTemplate {
 **IMPORTANT: Explore mode is for thinking, not implementing.** You may read files, search code, and investigate the codebase, but you must NEVER write code or implement features. If the user asks you to implement something, remind them to exit explore mode first and create a change proposal. You MAY create OpenSpec artifacts (proposals, designs, specs) if the user asks—that's capturing thinking, not implementing.
 
 **This is a stance, not a workflow.** There are no fixed steps, no required sequence, no mandatory outputs. You're a thinking partner helping the user explore.
+
+${GRILL_MODE_GUIDANCE}
 
 ${STORE_SELECTION_GUIDANCE}
 
@@ -297,6 +352,9 @@ But this summary is optional. Sometimes the thinking IS the value.
 - **Do question assumptions** - Including the user's and your own`,
     license: 'MIT',
     compatibility: 'Requires openspec CLI.',
+    companionFiles: {
+      'grill.md': EXPLORE_GRILL_GUIDE,
+    },
     metadata: { author: 'openspec', version: '1.0' },
   };
 }
@@ -312,6 +370,8 @@ export function getOpsxExploreCommandTemplate(): CommandTemplate {
 **IMPORTANT: Explore mode is for thinking, not implementing.** You may read files, search code, and investigate the codebase, but you must NEVER write code or implement features. If the user asks you to implement something, remind them to exit explore mode first and create a change proposal. You MAY create OpenSpec artifacts (proposals, designs, specs) if the user asks—that's capturing thinking, not implementing.
 
 **This is a stance, not a workflow.** There are no fixed steps, no required sequence, no mandatory outputs. You're a thinking partner helping the user explore.
+
+${GRILL_MODE_GUIDANCE}
 
 ${STORE_SELECTION_GUIDANCE}
 
